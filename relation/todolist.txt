@@ -1,0 +1,21 @@
+creattion de relation/table
+ -nom(string)
+ -colonne(colonne)1
+creation de colonne -nom  (string)
+                    -donner (vector)
+
+operateur and=> ary
+operateur or => na 
+clause where => izay
+
+
+ if (donner.get(i) instanceof Vector) {
+                                    String dn = donner.get(i).toString();
+                                    String chaine = dn.replaceAll("[\\[\\]\\s]","");
+                                    String[] tabChaine = chaine.split(",");
+                                     for (int index = 0; index < tabChaine.length; index++) {
+                                          if (!tabChaine[index].equals(condition[1])) {
+                                            donner.remove()
+                                          }
+                                     }
+                                }

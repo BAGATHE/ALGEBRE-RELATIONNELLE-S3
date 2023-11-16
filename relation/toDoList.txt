@@ -1,0 +1,14 @@
+#Creation du classe :   -Table: -Nom  (String)
+                                -Attributs (String[])
+                                -Donnnees (Vector)
+
+#Creation du classe Fonction pour faire tout les actions:   -Creation du table :  createTable(String nom,String[] attributs)
+                                                            -get Table par le nom : getTableByName(String nom)
+                                                            -ajouter du ligne dans le table : insertTable(String nom,Vector donnee)
+                                                            -Printer(Table):-getLength() pour avoir le caractere le plus long
+                                                                            -getMax(String caractere,int max) pour reformuler tout le donnee en meme length
+                                                            -Verification du requete : isValid()
+                                                            -Traitement pour traiter le requete : traiter(String sql)
+
+#Creation du classe Main pour l'affichage:-Scanner pour entrer le requete a executer
+                                          -Appel du fonction traiter pour le traitement du requete
