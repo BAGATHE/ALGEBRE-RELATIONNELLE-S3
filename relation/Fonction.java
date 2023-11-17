@@ -53,7 +53,6 @@ public class Fonction {
     }
     return false;
 
-    //throw new Exception("Les types de données autorisés sont String, nombre et date. Veuillez vérifier votre requête.");
 }
 
 //fonction qui met dans un vector les infomation necessaire a une relation nom type nomattribut
