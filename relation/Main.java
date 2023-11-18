@@ -92,11 +92,11 @@ Attribut threes = new Attribut("d","D");
     String cola ="B";
     String colb = "D";
     Vector<String> colonne = new Vector<String>();
-    colonne.add(cola); colonne.add(colb);
+    colonne.add(cola); ;colonne.add(colb);
 
-    function.tetha_join(a, b, colonne);
-
-
+    //function.tetha_join(a, b, colonne);
+ 
+System.out.println( function.getIndiceAttributToCompare(b.getAttributs(),"B"));
 
 
 
@@ -107,7 +107,7 @@ Attribut threes = new Attribut("d","D");
 
 //function.displayAllcontent(function.cartesianProduct(a, b));
 //System.out.println(function.cartesianProduct(a, b).getDonnees().get(0));
-function.naturalJoin(a, b);
+//function.naturalJoin(a, b);
 
 //Relation r = function.getTableContentAll("alaivo daoly personne");
 //function.displayAllcontent(r);

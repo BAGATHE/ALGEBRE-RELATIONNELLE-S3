@@ -678,7 +678,7 @@ data_relationb.addAll(b.getDonnees());
     return resultat;
 }
 
-//fonction maka indice ireo attribut roa mitovy 
+//fonction maka indice ireo attribut roa mitovy anaty relation 1
 ArrayList<int[]> getIndiceAttributSame(Relation r){
     ArrayList<int[]> indiceAttribut = new ArrayList<int[]>();
     for (int index = 0; index < r.getAttributs().size()-1; index++) {
@@ -768,7 +768,7 @@ public static Vector<Attribut> getAttributsCommuns(Relation r, Relation s) {
 
 
 //FONCTION MANAO JOIUNTURE NATURELLE DE DEUX RELATION 
-public void naturalJoin(Relation a ,Relation b){
+public Relation naturalJoin(Relation a ,Relation b){
     
     Vector<Attribut> newAttributs = new Vector<>();
     Relation resultproductCartesian  = cartesianProduct(a, b); //produit cartesien des deux relation
@@ -811,7 +811,7 @@ for (Object indice : doublon) {
 Vector<Attribut> newAttribut = getUniqueAttribut(resultproductCartesian.getAttributs());
 Relation result = new Relation(a.getName()+" join " + b.getName(),newAttribut,newdata);
 
-//return result;
+return result;
 }
 
 //fonction qui recupere les attribut par colonne souhaiter
@@ -843,36 +843,26 @@ public boolean isSametype(Vector<Attribut> attribu){
       return true;
 }
 
-public Vector  getindiceAttributJoin(Vector<Attribut> allAttribut,Vector<String> col){
-              Vector indiceAttribut = new Vector();
-             for (Object colone : col) {
-                for (int index = 0; index < allAttribut.size(); index++) {
-                     if (colone.equals(allAttribut.get(index))) {
-                        
-                     }
-                }
-             }
-              
-              return indiceAttribut;
+
+
+//function get indice attribut specify to colunm
+public int getIndiceAttributToCompare(Vector<Attribut> attributs, String colonneName) {
+    for (int index = 0; index < attributs.size(); index++) {
+        if (attributs.get(index).getNom().trim().equals(colonneName.trim())) {
+            return index; // Si la colonne est trouvée, retourne l'indice et sort de la méthode.
+        }
+    }
+    return -1; // Si la colonne n'est pas trouvée, retourne -1.
 }
+
+
 
 //FONCTION MANAO TETHA JOINTURE
 public void tetha_join(Relation a,Relation b,Vector<String>colonne){
-    Relation resulproductCartesian = cartesianProduct(a, b);
-    Vector data = new Vector<>();
-    data.addAll(resulproductCartesian.getDonnees());
-
-    //verifieko hoe meme type ve le colone atao jointure si oui on passe a l'etape suivant sinon on sort
-    if (isSametype(getAttributbycol(resulproductCartesian.getAttributs(),colonne))) {
      
-        
-    }else{
-        System.out.println("ts mitovy");
-    }
-     //alaiko indice nle colone atao jointure anaty produit cartesien
-     //compareko egalite donner anle colonne
-
-    System.out.println(isSametype(getAttributbycol(resulproductCartesian.getAttributs(),colonne)));
+// i get the colunm index that is compared
+//checks if the two attributs have the same data type (if yes we continue algo if no we display error)
+//i will make two loops to compare the index data (if the two relation have a same data we combine)
     
 }
 
