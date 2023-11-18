@@ -120,13 +120,14 @@ public void createTable(Relation relation) {
     }
 }
 public int verifExpression(String sqlRequete) {
-        String[] modeles = new String[4];
+        String[] modeles = new String[5];
         modeles[0] = "mamorona\\s+([a-zA-Z_]\\w*)\\s*\\(([^)]*)\\)+$"; //mamorona personne(string nom,nombre age)
         modeles[1] ="ampidiro anaty\\s+([a-zA-Z_]\\w*)\\s*\\(([^)]*)\\)";//ampidiro anaty personne(lolo,21);
         modeles[2] ="^alaivo daoly\\s+[a-zA-Z]+$"; //alaivo daoly personne
         modeles[3]="alaivo anaty\\s+([a-zA-Z_]\\w*)\\s*\\(([^)]*)\\)(?:\\s+izay\\s+([^=]+)=([^=]+)(?:\\s+(ary|na)\\s+([^=]+)=(\\w+|'[^']*'))*)?$";
         //alaivo anaty personne(nom,age) izay nom=xxx ary age=xxx;
-        modeles[4]="ataovy jointure naturaly\\s+([a-zA-Z_]\\w*)\\s*\\(([^)]*)\\)";
+        //modeles[4]="ataovy jointure naturaly\\s+([a-zA-Z_]\\w*)\\s+sy\\s+([a-zA-Z_]\\w*)+$";
+        modeles[4]="ataovy jointure naturaly\\s+\\(([^)]*)\\)$";
         for (int i = 0; i < modeles.length; i++) {
             Pattern expression = Pattern.compile(modeles[i]);
             Matcher matcher = expression.matcher(sqlRequete);
@@ -392,6 +393,8 @@ public boolean relationIsExist(Relation relation){
                   if (relation.getAttributs().size()>0) {
                     displayAllcontent(relation);
                   } 
+           }else if (verifExpression(requette)==4) {
+                      System.out.println("jointure naturel");
            }else{
             System.out.println("(1)--->stucture requette inexacte");
            }
@@ -617,6 +620,8 @@ public Relation getContentInRelation(String input){
     }
     return table;
 }
+
+
 
 public void displayAllcontent(Relation relation){
   Vector data = relation.getDonnees();
@@ -856,14 +861,47 @@ public int getIndiceAttributToCompare(Vector<Attribut> attributs, String colonne
 }
 
 
-
 //FONCTION MANAO TETHA JOINTURE
-public void tetha_join(Relation a,Relation b,Vector<String>colonne){
-     
+public Relation tetha_join(Relation a,Relation b,Vector<String>colonne){
 // i get the colunm index that is compared
+int indiceAttributRelation_a = getIndiceAttributToCompare(a.getAttributs(), colonne.get(0));
+int indiceAttributRelation_b = getIndiceAttributToCompare(b.getAttributs(), colonne.get(1));
+
 //checks if the two attributs have the same data type (if yes we continue algo if no we display error)
-//i will make two loops to compare the index data (if the two relation have a same data we combine)
-    
+if (a.getAttributs().get(indiceAttributRelation_a).getType().trim().equals(b.getAttributs().get(indiceAttributRelation_b).getType().trim())) {
+    Vector datas = new Vector<>();
+    //i will make two loops to compare the index data (if the two relation have a same data we combine)
+    for (Object data_a : a.getDonnees()) {
+        for (Object data_b : b.getDonnees()) {
+            //convertiseko ho tableau de string lay data d compareko avieo indice  colonne ra mitovy d addeko
+            String chaine_a = data_a.toString();
+            String chaine_b = data_b.toString();
+            String[] tabchaine_a = chaine_a.split(","); 
+             String[] tabchaine_b = chaine_b.split(",");
+             if (tabchaine_a[indiceAttributRelation_a].trim().equals(tabchaine_b[indiceAttributRelation_b].trim())) {
+                Vector nouvelleLigne = new Vector();
+                nouvelleLigne.add(data_a);
+                nouvelleLigne.add(data_b); 
+                String newline = nouvelleLigne.toString();
+                String sousdata = newline.substring(1, newline.length()-1);
+                datas.add(sousdata);
+             } 
+        }
+    }
+    Vector<Attribut> atr = new Vector<Attribut>();
+    atr.addAll(a.getAttributs());
+    atr.addAll(b.getAttributs());
+
+    Relation result = new Relation(a.getName() + " join " + b.getName(), atr, datas);
+
+return result;
+
+} else {
+    System.out.println("Erreur : les types d'attributs ne sont pas identiques.");
+}
+
+
+return null; 
 }
 
 }

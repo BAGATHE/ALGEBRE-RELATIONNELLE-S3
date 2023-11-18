@@ -18,7 +18,7 @@ public class Main {
         System.out.println(tab.getAttributs()[1]);
         System.out.println(tab.getAttributs()[2]);
 */
-/* *
+
 System.out.println("connected"); 
         while (exit.equals(" ")) {
             System.out.print("=> : ");
@@ -32,7 +32,7 @@ exit = "exit";
         }
        System.out.println("bye bye");
         scanner.close();
-*/
+
 
 //System.out.println(function.verifExpression("alaivo anaty personne(dtn,age,nom) izay dtn=12-10-2000 ary nom=lolo na nom=baba"));
   /* 
@@ -57,15 +57,15 @@ for (int i = 0; i < arguments.length; i++) {
 //System.out.println(function.compareStructure(function.getStructureRelation("personne"),function.getStructuredata(data)));
 //function.insertInto(function.addDataRelation("ampidiro anaty personne(lolo,44,12-05-2000)"));  
  
-Attribut one = new Attribut("a","A");
-Attribut two = new Attribut("b","B");
+Attribut one = new Attribut("string","nom");
+Attribut two = new Attribut("nombre","age");
 
     Vector<Attribut> attributs = new Vector();
     attributs.add(one);
     attributs.add(two);
-    String data1a="1,A";
-    String data2a="1,B";
-    String data3a="4,A";
+    String data1a="lolo,40";
+    String data2a="lala,12";
+    String data3a="lili,10";
 
     Vector data = new Vector();
     data.add(data1a);
@@ -73,32 +73,32 @@ Attribut two = new Attribut("b","B");
     data.add(data3a);
     Relation a = new Relation("personne", attributs, data);
 
-Attribut ones = new Attribut("a","A");
-Attribut twos = new Attribut("b","B");
-Attribut threes = new Attribut("d","D");
+Attribut ones = new Attribut("string","anarana");
+Attribut twos = new Attribut("string ","sex");
+Attribut threes = new Attribut("date","naissance");
+
     Vector<Attribut> attributss = new Vector();
     attributss.add(ones);
     attributss.add(twos);
     attributss.add(threes);
-     String data1b="1,A,B";
-      String data2b="2,C,B";
-      String data3b="4,A,A";
+     String data1b="lolo,male,17-24-2000";
+      String data2b="kan,femelle,01-01-1998";
+      String data3b="lili,femelle,04-08-2000";
     Vector datas = new Vector();
      datas.add(data1b);
     datas.add(data2b);
     datas.add(data3b);
-    Relation b = new Relation("personne", attributss, datas);
+    Relation b = new Relation("suplementaire", attributss, datas);
 
-    String cola ="B";
-    String colb = "D";
+    String cola ="nom";
+    String colb = "anarana";
     Vector<String> colonne = new Vector<String>();
     colonne.add(cola); ;colonne.add(colb);
 
     //function.tetha_join(a, b, colonne);
  
-System.out.println( function.getIndiceAttributToCompare(b.getAttributs(),"B"));
 
-
+Relation r = function.tetha_join(a, b, colonne);
 
 
    // function.jointureNaturelle(a, b);
@@ -114,7 +114,7 @@ System.out.println( function.getIndiceAttributToCompare(b.getAttributs(),"B"));
 
 
 //function.traitementRequest("alaivo daoly personne");
-//System.out.println(function.verifExpression("alaivo anaty personne(nom) where nom=lolo or id=4 and mena=5"));
+//System.out.println(function.verifExpression("ataovy jointure naturaly personne sy animaux"));
     }catch(Exception e){
         System.out.println(e.getMessage());
     }    
