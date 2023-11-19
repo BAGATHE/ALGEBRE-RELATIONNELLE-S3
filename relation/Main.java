@@ -18,7 +18,7 @@ public class Main {
         System.out.println(tab.getAttributs()[1]);
         System.out.println(tab.getAttributs()[2]);
 */
-
+ /* 
 System.out.println("connected"); 
         while (exit.equals(" ")) {
             System.out.print("=> : ");
@@ -32,7 +32,7 @@ exit = "exit";
         }
        System.out.println("bye bye");
         scanner.close();
-
+*/
 
 //System.out.println(function.verifExpression("alaivo anaty personne(dtn,age,nom) izay dtn=12-10-2000 ary nom=lolo na nom=baba"));
   /* 
@@ -73,7 +73,7 @@ Attribut two = new Attribut("nombre","age");
     data.add(data3a);
     Relation a = new Relation("personne", attributs, data);
 
-Attribut ones = new Attribut("string","anarana");
+Attribut ones = new Attribut("string","nom");
 Attribut twos = new Attribut("string ","sex");
 Attribut threes = new Attribut("date","naissance");
 
@@ -94,11 +94,11 @@ Attribut threes = new Attribut("date","naissance");
     String colb = "anarana";
     Vector<String> colonne = new Vector<String>();
     colonne.add(cola); ;colonne.add(colb);
-
+    function.displayAllcontent(function.naturalJoin(a, b));
     //function.tetha_join(a, b, colonne);
  
 
-Relation r = function.tetha_join(a, b, colonne);
+//Relation r = function.tetha_join(a, b, colonne);
 
 
    // function.jointureNaturelle(a, b);
@@ -107,7 +107,7 @@ Relation r = function.tetha_join(a, b, colonne);
 
 //function.displayAllcontent(function.cartesianProduct(a, b));
 //System.out.println(function.cartesianProduct(a, b).getDonnees().get(0));
-//function.naturalJoin(a, b);
+//function.displayAll(function.naturalJoin(a, b));
 
 //Relation r = function.getTableContentAll("alaivo daoly personne");
 //function.displayAllcontent(r);
