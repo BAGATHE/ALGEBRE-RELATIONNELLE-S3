@@ -93,7 +93,7 @@ public  Relation getRelationInfo(String input) {
 }
 public void createTable(Relation relation) {
     try {
-        String chemin = "/home/emadaly/backupLinux/LECONS/S3/tsinjo/relation/";
+        String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
         File fichier = new File(chemin + relation.getName() + ".txt");
 
         if (!fichier.exists()) {
@@ -147,7 +147,7 @@ public Vector<String> getStructureRelation(String nom) {
         Vector<String> attributs = new Vector<>();
 
         try {
-            String chemin = "/home/emadaly/backupLinux/LECONS/S3/tsinjo/relation/";
+            String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
             File fichier = new File(chemin + nom + ".txt");
 
             if (fichier.exists()) {
@@ -175,7 +175,7 @@ public Vector<String> getNameAttributRelation(String nom) {
         Vector<String> attributs = new Vector<>();
 
         try {
-            String chemin = "/home/emadaly/backupLinux/LECONS/S3/tsinjo/relation/";
+            String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
             File fichier = new File(chemin + nom + ".txt");
 
             if (fichier.exists()) {
@@ -202,7 +202,7 @@ public Vector<Attribut> getAttributRelation(String relationName) {
         Vector<Attribut> attributs = new Vector<>();
 
         try {
-            String chemin = "/home/emadaly/backupLinux/LECONS/S3/tsinjo/relation/";
+            String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
             File fichier = new File(chemin + relationName + ".txt");
 
             if (fichier.exists()) {
@@ -331,7 +331,7 @@ public Relation addDataRelation(String input) {
 //fonction qui insert dans une table
 public void insertInto(Relation relation) {
     try {
-        String chemin = "/home/emadaly/backupLinux/LECONS/S3/tsinjo/relation/";
+        String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
         File fichier = new File(chemin + relation.getName() + ".txt");
 
         if (fichier.exists()) {
@@ -358,7 +358,7 @@ public void insertInto(Relation relation) {
 
 public boolean relationIsExist(Relation relation){
     if (relation!=null) {
-        String chemin = "/home/emadaly/backupLinux/LECONS/S3/tsinjo/relation/";
+        String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
         File fichier = new File(chemin + relation.getName() + ".txt");
         if (fichier.exists()) {
            return true;
@@ -370,10 +370,93 @@ public boolean relationIsExist(Relation relation){
 
 
 
+
+
+
+
+
+public void displayAllcontent(Relation relation) {
+    Vector<Attribut> attributs = relation.getAttributs();
+    Vector donnees = relation.getDonnees();
+
+    // Affichage de l'en-tête du tableau
+    System.out.print("+");
+    for (Attribut attribut : attributs) {
+        for (int i = 0; i < 11; i++) {
+            System.out.print("-");
+        }
+        System.out.print("+");
+    }
+    System.out.println();
+
+    // Affichage des noms d'attributs
+    System.out.print("|");
+    for (Attribut attribut : attributs) {
+        String attributeName = attribut.getNom();
+        System.out.printf(" %-" + (attributeName.length()) + "s       |", attributeName);
+    }
+    System.out.println();
+
+    // Affichage de la ligne de séparation entre l'en-tête et les données
+    System.out.print("+");
+    for (Attribut attribut : attributs) {
+        for (int i = 0; i < 11; i++) {
+            System.out.print("-");
+        }
+        System.out.print("+");
+    }
+    System.out.println();
+
+
+
+    // Affichage des données
+    for (Object data : donnees) {
+           String chaine = data.toString();
+           String tabchaine[] = chaine.split(",");
+
+        System.out.print("|");
+        for (String valueString : tabchaine) {
+            System.out.printf(" %-" + (10) + "s |", valueString);
+        }
+        System.out.println();
+    }
+
+    // Affichage de la ligne de fin du tableau
+    System.out.print("+");
+    for (Attribut attribut : attributs) {
+        for (int i = 0; i < 11; i++) {
+            System.out.print("-");
+        }
+        System.out.print("+");
+    }
+    System.out.println();
+    
+}
+
+
+public void displayAll(Relation relation){
+    Vector data = relation.getDonnees();
+  
+    System.out.println(relation.getAttributs().toString());
+    for (int i = 0; i < data.size(); i++) {
+      System.out.println(data.get(i).toString());
+    }  
+  }
+
+
+
+
+
+
+
+
+
+
+
+
  public void traitementRequest(String requette)throws Exception{
            if (verifExpression(requette)==0) {
             Relation relation = getRelationInfo(requette);
-             
             if (relation.getAttributs().size()>0) {
                 createTable(relation);
             }        
@@ -394,11 +477,71 @@ public boolean relationIsExist(Relation relation){
                     displayAllcontent(relation);
                   } 
            }else if (verifExpression(requette)==4) {
-                      System.out.println("jointure naturel");
+                  String [] arguments = getArgument(requette);
+                  Relation a = getRelationByName(arguments[0]);
+                  Relation b = getRelationByName(arguments[1]);
+                  displayAllcontent(naturalJoin(a,b));
            }else{
             System.out.println("(1)--->stucture requette inexacte");
            }
     }
+
+//fonction qui recuperer les chaine de caracterer entre parathese
+    public String[] getArgument(String requette){
+            // J'extrait le nom et les arguments
+        String[] parts = requette.split("\\(");
+        String argumentsString = parts[1].replaceAll("\\)", "").trim();
+        // Mettre les arguments dans un tableau
+        String[] arguments = argumentsString.split(",");
+
+        return arguments;
+    }
+//fonction qui recuperer les info d'une relation par son nom
+   public Relation getRelationByName(String name){
+    Vector<String> lignes = new Vector<>();
+    Relation table = null;
+    Vector <Attribut> attri = new Vector();
+    Vector data = new Vector<>();
+    try {
+        String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
+        File fichier = new File(chemin+name.trim()+".txt");
+        if (fichier.exists()) {
+            BufferedReader reader = new BufferedReader(new FileReader(fichier));
+            String ligne;
+           while ((ligne = reader.readLine()) != null) {
+                lignes.add(ligne);
+            }
+            reader.close();
+            if (!lignes.isEmpty()) {
+                //ajouter les attribut
+                String[] attributs = lignes.get(0).split(",");
+                for (int index = 0; index < attributs.length; index++) {
+                    String[] attribut = attributs[index].trim().split(" ");
+                    Attribut atr = new Attribut(attribut[0], attribut[1]);
+                    attri.add(atr);
+                }
+                // Créer la table avec le nom et les attributs
+                table = new Relation(name, attri, data);
+
+                // Ajouter les données à la table
+                for (int i = 1; i < lignes.size(); i++) {
+                    String[] donnees = lignes.get(i).split(",");
+                    String sousdata = String.join(",", donnees);
+                    data.add(sousdata);
+                }
+                table = new Relation(name, attri, data);
+            } else {
+                System.out.println("Le fichier est vide.");
+            }
+        } else {
+            System.out.println("La relation n'existe pas");
+        }
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+    }
+    return table;
+}
+
 
    public Relation getTableContentAll(String input){
     Vector<String> lignes = new Vector<>();
@@ -407,7 +550,7 @@ public boolean relationIsExist(Relation relation){
     Vector data = new Vector<>();
     String tableName = input.replaceFirst("alaivo daoly","").trim();
     try {
-        String chemin = "/home/emadaly/backupLinux/LECONS/S3/tsinjo/relation/";
+        String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
         File fichier = new File(chemin + tableName + ".txt");
         if (fichier.exists()) {
             BufferedReader reader = new BufferedReader(new FileReader(fichier));
@@ -462,7 +605,7 @@ public Relation getContentInRelation(String input){
     String argumentsString = parts[1].replaceAll("\\)", "").trim();
     String[] partOfRequette = argumentsString.split(" ");
    try {
-        String chemin = "/home/emadaly/backupLinux/LECONS/S3/tsinjo/relation/";
+        String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
         File fichier = new File(chemin + tableName + ".txt");
         if (fichier.exists()) {
             BufferedReader reader = new BufferedReader(new FileReader(fichier));
@@ -623,14 +766,6 @@ public Relation getContentInRelation(String input){
 
 
 
-public void displayAllcontent(Relation relation){
-  Vector data = relation.getDonnees();
-
-  System.out.println(relation.getAttributs().toString());
-  for (int i = 0; i < data.size(); i++) {
-    System.out.println(data.get(i).toString());
-  }  
-}
 
 //fonction qui retourne l'indice de la colonne
 public int getIndiceColonne(String tableName,String nameColonne){
@@ -775,8 +910,7 @@ public static Vector<Attribut> getAttributsCommuns(Relation r, Relation s) {
 //FONCTION MANAO JOIUNTURE NATURELLE DE DEUX RELATION 
 public Relation naturalJoin(Relation a ,Relation b){
     
-    Vector<Attribut> newAttributs = new Vector<>();
-    Relation resultproductCartesian  = cartesianProduct(a, b); //produit cartesien des deux relation
+    Relation resultproductCartesian  = cartesianProduct(a,b); //produit cartesien des deux relation
     Vector data = new Vector();
     data.addAll(resultproductCartesian.getDonnees());
     Vector tabindiceline =new Vector(); //vector qui va contenir  les indice de ligne ou il y a le donnéé identique de colone de meme type et nom 
@@ -793,7 +927,8 @@ for (int i = 0; i < indiceAttributSAme.size(); i++) {
         }
     }
 }
-System.out.println(tabindiceline.toString());
+
+
 Vector doublon = getDoublon(tabindiceline);
 Vector newdata  = new Vector(); 
 Vector indiceUniquedata = getIndiceAttrubutUnique(getUniqueAttribut(resultproductCartesian.getAttributs()),resultproductCartesian.getAttributs());
@@ -809,14 +944,14 @@ for (Object indice : doublon) {
         }
       }
       newdata.add(result);
-      
-      
 }
 
 Vector<Attribut> newAttribut = getUniqueAttribut(resultproductCartesian.getAttributs());
 Relation result = new Relation(a.getName()+" join " + b.getName(),newAttribut,newdata);
 
+
 return result;
+
 }
 
 //fonction qui recupere les attribut par colonne souhaiter
@@ -903,6 +1038,26 @@ return result;
 
 return null; 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
