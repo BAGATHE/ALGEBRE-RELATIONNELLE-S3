@@ -18,7 +18,7 @@ public class Main {
         System.out.println(tab.getAttributs()[1]);
         System.out.println(tab.getAttributs()[2]);
 */
- /* 
+/* 
 System.out.println("connected"); 
         while (exit.equals(" ")) {
             System.out.print("=> : ");
@@ -58,45 +58,44 @@ for (int i = 0; i < arguments.length; i++) {
 //function.insertInto(function.addDataRelation("ampidiro anaty personne(lolo,44,12-05-2000)"));  
  
 Attribut one = new Attribut("string","nom");
-Attribut two = new Attribut("nombre","age");
+Attribut two = new Attribut("string","ville");
 
     Vector<Attribut> attributs = new Vector();
     attributs.add(one);
     attributs.add(two);
-    String data1a="lolo,40";
-    String data2a="lala,12";
-    String data3a="lili,10";
+    String data1a="danny, tana";
+    String data2a="mec,blabla";
+    String data3a="kan,fene";
 
     Vector data = new Vector();
     data.add(data1a);
     data.add(data2a);
     data.add(data3a);
-    Relation a = new Relation("personne", attributs, data);
+    Relation a = new Relation("olona", attributs, data);
 
 Attribut ones = new Attribut("string","nom");
-Attribut twos = new Attribut("string ","sex");
-Attribut threes = new Attribut("date","naissance");
+Attribut twos = new Attribut("nombre","age");
 
     Vector<Attribut> attributss = new Vector();
     attributss.add(ones);
     attributss.add(twos);
-    attributss.add(threes);
-     String data1b="lolo,male,17-24-2000";
-      String data2b="kan,femelle,01-01-1998";
-      String data3b="lili,femelle,04-08-2000";
+     String data1b="lolo,22";
+      String data2b="kan,22";
+      String data3b="danny,20";
     Vector datas = new Vector();
      datas.add(data1b);
     datas.add(data2b);
     datas.add(data3b);
-    Relation b = new Relation("suplementaire", attributss, datas);
+    Relation b = new Relation("personne", attributss, datas);
 
     String cola ="nom";
-    String colb = "anarana";
+    String colb = "nom";
     Vector<String> colonne = new Vector<String>();
     colonne.add(cola); ;colonne.add(colb);
-    function.displayAllcontent(function.naturalJoin(a, b));
-    //function.tetha_join(a, b, colonne);
- 
+   // function.displayAllcontent(function.naturalJoin(a,b));
+    //function.displayAllcontent(function.tetha_join(a, b, colonne));
+ //function.displayAllcontent(function.naturalJoin(a, b));
+
 
 //Relation r = function.tetha_join(a, b, colonne);
 
@@ -114,7 +113,7 @@ Attribut threes = new Attribut("date","naissance");
 
 
 //function.traitementRequest("alaivo daoly personne");
-//System.out.println(function.verifExpression("ataovy jointure naturaly personne sy animaux"));
+function.traitementRequest("ataovy jointure (personne:nom,olona:ville)");
     }catch(Exception e){
         System.out.println(e.getMessage());
     }    

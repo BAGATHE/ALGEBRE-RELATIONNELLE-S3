@@ -1,0 +1,4 @@
+string nom, string ville
+danny, tana
+mec, blabla
+kan, fene

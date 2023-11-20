@@ -1,7 +1,4 @@
-string nom, nombre age, date dtn
-sergio, 44, 12-10-1996
-lolo, 22, 27-05-2000
-danny, 20, 17-10-2003
-lolo, 45, 21-10-2000
-bertrand, 22, 17-12-2000
-baba, 20, 21-10-2000
+string nom, nombre age
+lolo, 22
+kan, 22
+danny, 20
