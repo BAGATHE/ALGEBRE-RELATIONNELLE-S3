@@ -120,7 +120,7 @@ public void createTable(Relation relation) {
     }
 }
 public int verifExpression(String sqlRequete) {
-        String[] modeles = new String[5];
+        String[] modeles = new String[6];
         modeles[0] = "mamorona\\s+([a-zA-Z_]\\w*)\\s*\\(([^)]*)\\)+$"; //mamorona personne(string nom,nombre age)
         modeles[1] ="ampidiro anaty\\s+([a-zA-Z_]\\w*)\\s*\\(([^)]*)\\)";//ampidiro anaty personne(lolo,21);
         modeles[2] ="^alaivo daoly\\s+[a-zA-Z]+$"; //alaivo daoly personne
@@ -128,6 +128,7 @@ public int verifExpression(String sqlRequete) {
         //alaivo anaty personne(nom,age) izay nom=xxx ary age=xxx;
         //modeles[4]="ataovy jointure naturaly\\s+([a-zA-Z_]\\w*)\\s+sy\\s+([a-zA-Z_]\\w*)+$";
         modeles[4]="ataovy jointure naturaly\\s+\\(([^)]*)\\)$";
+        modeles[5]="ataovy jointure\\s+\\(([^)]*)\\)$";
         for (int i = 0; i < modeles.length; i++) {
             Pattern expression = Pattern.compile(modeles[i]);
             Matcher matcher = expression.matcher(sqlRequete);
@@ -444,16 +445,6 @@ public void displayAll(Relation relation){
   }
 
 
-
-
-
-
-
-
-
-
-
-
  public void traitementRequest(String requette)throws Exception{
            if (verifExpression(requette)==0) {
             Relation relation = getRelationInfo(requette);
@@ -481,6 +472,17 @@ public void displayAll(Relation relation){
                   Relation a = getRelationByName(arguments[0]);
                   Relation b = getRelationByName(arguments[1]);
                   displayAllcontent(naturalJoin(a,b));
+           }else if (verifExpression(requette)==5) {
+            ArrayList<Relation> relations = new ArrayList<Relation>();
+            Vector<String> colonne = new Vector();
+                         String [] arguStrings = getArgument(requette);
+                         for (String argument : arguStrings) {
+                             colonne.add(argument.trim().split(":")[1]);
+                             relations.add(getRelationByName(argument.trim().split(":")[0]));
+                         }
+
+                         displayAllcontent(tetha_join(relations.get(0),relations.get(1), colonne));
+                         
            }else{
             System.out.println("(1)--->stucture requette inexacte");
            }
@@ -874,7 +876,7 @@ public Vector getIndiceAttrubutUnique(Vector<Attribut> uniqueAtr,Vector<Attribut
 
 
 //fonction mamerina doublon
-public static Vector getDoublon(Vector vector) {
+public  Vector getDoublon(Vector vector) {
     Vector doublons = new Vector();
     HashSet set = new HashSet();
 
@@ -928,8 +930,8 @@ for (int i = 0; i < indiceAttributSAme.size(); i++) {
     }
 }
 
+Vector doublon =tabindiceline;
 
-Vector doublon = getDoublon(tabindiceline);
 Vector newdata  = new Vector(); 
 Vector indiceUniquedata = getIndiceAttrubutUnique(getUniqueAttribut(resultproductCartesian.getAttributs()),resultproductCartesian.getAttributs());
 for (Object indice : doublon) {
@@ -941,11 +943,12 @@ for (Object indice : doublon) {
              result=tabline[(int)indiceUniquedata.get(index)];
         }else{
         result= result+","+tabline[(int)indiceUniquedata.get(index)];
+         
         }
       }
+    
       newdata.add(result);
 }
-
 Vector<Attribut> newAttribut = getUniqueAttribut(resultproductCartesian.getAttributs());
 Relation result = new Relation(a.getName()+" join " + b.getName(),newAttribut,newdata);
 
