@@ -1,0 +1,4 @@
+string nom, nombre age
+lolo, 22
+clara, 26
+danny, 25

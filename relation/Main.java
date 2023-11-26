@@ -18,7 +18,7 @@ public class Main {
         System.out.println(tab.getAttributs()[1]);
         System.out.println(tab.getAttributs()[2]);
 */
-/* 
+   
 System.out.println("connected"); 
         while (exit.equals(" ")) {
             System.out.print("=> : ");
@@ -32,9 +32,9 @@ exit = "exit";
         }
        System.out.println("bye bye");
         scanner.close();
-*/
 
-//System.out.println(function.verifExpression("alaivo anaty personne(dtn,age,nom) izay dtn=12-10-2000 ary nom=lolo na nom=baba"));
+
+//System.out.println(function.verifExpression("ataovy jointure (personne:nom=people:nom,personne:age=people:age)"));
   /* 
 String input="alaivo anaty personne(prenom,tache,lolo) where nom=lolo and nom=lolo";
  
@@ -111,9 +111,9 @@ Attribut twos = new Attribut("nombre","age");
 //Relation r = function.getTableContentAll("alaivo daoly personne");
 //function.displayAllcontent(r);
 
-
 //function.traitementRequest("alaivo daoly personne");
-function.traitementRequest("ataovy jointure (personne:nom,olona:ville)");
+//function.traitementRequest("ataovy jointure (personne:nom=olona:nom)");
+//System.out.println(function.getArgument("ataovy jointure (personne:nom=olona:nom,personne:age=olona:age)").length);
     }catch(Exception e){
         System.out.println(e.getMessage());
     }    

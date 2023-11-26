@@ -14,6 +14,10 @@ import java.util.*;
 
 public class Fonction {
 
+
+static String chemin ="/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
+
+//fonction qui fait une operation d'intersection sur deux vecteur 
     public Vector intersection(Vector e1,Vector e2){
 		Vector rep = new Vector();
 		for (int i=0; i<e1.size();i++ ) {
@@ -28,6 +32,7 @@ public class Fonction {
 	}
 
 
+//fonction qui fait operation union sur deux vecteur
     public Vector union(Vector e1,Vector e2){
 		Vector rep = new Vector();
 		for (int i=0; i<e1.size();i++ ) {
@@ -42,7 +47,7 @@ public class Fonction {
 
 
 
-      
+//fonction qui verifie si le type entrer corespond a l'un des 3 types si oui il retourne true sinon false      
  public boolean verifType(String type){
     String[] types = {"string", "nombre", "date"};
 
@@ -54,6 +59,7 @@ public class Fonction {
     return false;
 
 }
+
 
 //fonction qui met dans un vector les infomation necessaire a une relation nom type nomattribut
 public  Relation getRelationInfo(String input) {
@@ -93,7 +99,6 @@ public  Relation getRelationInfo(String input) {
 }
 public void createTable(Relation relation) {
     try {
-        String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
         File fichier = new File(chemin + relation.getName() + ".txt");
 
         if (!fichier.exists()) {
@@ -126,18 +131,14 @@ public int verifExpression(String sqlRequete) {
         modeles[2] ="^alaivo daoly\\s+[a-zA-Z]+$"; //alaivo daoly personne
         modeles[3]="alaivo anaty\\s+([a-zA-Z_]\\w*)\\s*\\(([^)]*)\\)(?:\\s+izay\\s+([^=]+)=([^=]+)(?:\\s+(ary|na)\\s+([^=]+)=(\\w+|'[^']*'))*)?$";
         //alaivo anaty personne(nom,age) izay nom=xxx ary age=xxx;
-        //modeles[4]="ataovy jointure naturaly\\s+([a-zA-Z_]\\w*)\\s+sy\\s+([a-zA-Z_]\\w*)+$";
-        modeles[4]="ataovy jointure naturaly\\s+\\(([^)]*)\\)$";
+        modeles[4]="ataovy jointure naturaly\\s+\\(([^)]*)\\)$"; //ataovy jointure naturaly (personne,olona)
         modeles[5]="ataovy jointure\\s+\\(([^)]*)\\)$";
         for (int i = 0; i < modeles.length; i++) {
             Pattern expression = Pattern.compile(modeles[i]);
             Matcher matcher = expression.matcher(sqlRequete);
             
             if (matcher.find()) {
-               // String nomTable = matcher.group(1);
-                //if (nomTable.matches("[a-zA-Z_]+")) {
                     return i;
-                //}
             }
         }
 
@@ -148,7 +149,6 @@ public Vector<String> getStructureRelation(String nom) {
         Vector<String> attributs = new Vector<>();
 
         try {
-            String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
             File fichier = new File(chemin + nom + ".txt");
 
             if (fichier.exists()) {
@@ -176,7 +176,6 @@ public Vector<String> getNameAttributRelation(String nom) {
         Vector<String> attributs = new Vector<>();
 
         try {
-            String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
             File fichier = new File(chemin + nom + ".txt");
 
             if (fichier.exists()) {
@@ -203,9 +202,7 @@ public Vector<Attribut> getAttributRelation(String relationName) {
         Vector<Attribut> attributs = new Vector<>();
 
         try {
-            String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
-            File fichier = new File(chemin + relationName + ".txt");
-
+File fichier = new File(chemin + relationName + ".txt");
             if (fichier.exists()) {
                 BufferedReader reader = new BufferedReader(new FileReader(fichier));
                 String premiereLigne = reader.readLine();
@@ -305,6 +302,7 @@ public Relation addDataRelation(String input) {
         String tableName = parts[0].trim();
         String argumentsString = parts[1].replaceAll("\\)", "").trim();
         String[] arguments = argumentsString.split(",");
+        
 
         // Comparaison du type de données de la relation avec celui des données à insérer
         typeAttribut = getStructureRelation(tableName);
@@ -332,9 +330,7 @@ public Relation addDataRelation(String input) {
 //fonction qui insert dans une table
 public void insertInto(Relation relation) {
     try {
-        String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
-        File fichier = new File(chemin + relation.getName() + ".txt");
-
+      File fichier = new File(chemin + relation.getName() + ".txt");
         if (fichier.exists()) {
             try (BufferedWriter ecrire = new BufferedWriter(new FileWriter(fichier, true))) {
                 Vector<String> data = relation.getDonnees();
@@ -359,8 +355,7 @@ public void insertInto(Relation relation) {
 
 public boolean relationIsExist(Relation relation){
     if (relation!=null) {
-        String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
-        File fichier = new File(chemin + relation.getName() + ".txt");
+    File fichier = new File(chemin + relation.getName() + ".txt");
         if (fichier.exists()) {
            return true;
         }
@@ -368,13 +363,6 @@ public boolean relationIsExist(Relation relation){
     }
        return false;
 }
-
-
-
-
-
-
-
 
 public void displayAllcontent(Relation relation) {
     Vector<Attribut> attributs = relation.getAttributs();
@@ -476,13 +464,31 @@ public void displayAll(Relation relation){
             ArrayList<Relation> relations = new ArrayList<Relation>();
             Vector<String> colonne = new Vector();
                          String [] arguStrings = getArgument(requette);
-                         for (String argument : arguStrings) {
+
+                        if (arguStrings.length==1) {
+                         String[] arg = arguStrings[0].trim().split("=");    
+
+                         for (String argument : arg) {
                              colonne.add(argument.trim().split(":")[1]);
                              relations.add(getRelationByName(argument.trim().split(":")[0]));
                          }
 
                          displayAllcontent(tetha_join(relations.get(0),relations.get(1), colonne));
                          
+                        }else if (arguStrings.length>1) {
+
+                         for (String argument : arguStrings) {
+                                String [] condition = argument.trim().split("=");
+                                  for (int i = 0; i < condition.length; i++) {
+                                    colonne.add(condition[i].trim().split(":")[1]);
+                                    if (relations.size()< 2) {
+                                        relations.add(getRelationByName(condition[i].trim().split(":")[0]));
+                                    }
+                                  }   
+                         }
+                         displayAllcontent(tetha_join(relations.get(0),relations.get(1), colonne));
+                        }
+                        
            }else{
             System.out.println("(1)--->stucture requette inexacte");
            }
@@ -505,8 +511,7 @@ public void displayAll(Relation relation){
     Vector <Attribut> attri = new Vector();
     Vector data = new Vector<>();
     try {
-        String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
-        File fichier = new File(chemin+name.trim()+".txt");
+    File fichier = new File(chemin+name.trim()+".txt");
         if (fichier.exists()) {
             BufferedReader reader = new BufferedReader(new FileReader(fichier));
             String ligne;
@@ -552,8 +557,7 @@ public void displayAll(Relation relation){
     Vector data = new Vector<>();
     String tableName = input.replaceFirst("alaivo daoly","").trim();
     try {
-        String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
-        File fichier = new File(chemin + tableName + ".txt");
+    File fichier = new File(chemin + tableName + ".txt");
         if (fichier.exists()) {
             BufferedReader reader = new BufferedReader(new FileReader(fichier));
             String ligne;
@@ -607,8 +611,7 @@ public Relation getContentInRelation(String input){
     String argumentsString = parts[1].replaceAll("\\)", "").trim();
     String[] partOfRequette = argumentsString.split(" ");
    try {
-        String chemin = "/home/emadaly/backupLinux/devoir/S3/tsinjo/relation/";
-        File fichier = new File(chemin + tableName + ".txt");
+    File fichier = new File(chemin + tableName + ".txt");
         if (fichier.exists()) {
             BufferedReader reader = new BufferedReader(new FileReader(fichier));
             String ligne;
@@ -1000,14 +1003,20 @@ public int getIndiceAttributToCompare(Vector<Attribut> attributs, String colonne
 
 
 //FONCTION MANAO TETHA JOINTURE
+/* 
 public Relation tetha_join(Relation a,Relation b,Vector<String>colonne){
+
+Relation result = null;
+Vector<Attribut> atr = new Vector<Attribut>();
+Vector datas = new Vector<>();
+String jointureName="";
 // i get the colunm index that is compared
 int indiceAttributRelation_a = getIndiceAttributToCompare(a.getAttributs(), colonne.get(0));
 int indiceAttributRelation_b = getIndiceAttributToCompare(b.getAttributs(), colonne.get(1));
 
 //checks if the two attributs have the same data type (if yes we continue algo if no we display error)
 if (a.getAttributs().get(indiceAttributRelation_a).getType().trim().equals(b.getAttributs().get(indiceAttributRelation_b).getType().trim())) {
-    Vector datas = new Vector<>();
+   
     //i will make two loops to compare the index data (if the two relation have a same data we combine)
     for (Object data_a : a.getDonnees()) {
         for (Object data_b : b.getDonnees()) {
@@ -1026,22 +1035,80 @@ if (a.getAttributs().get(indiceAttributRelation_a).getType().trim().equals(b.get
              } 
         }
     }
+   
+    atr.addAll(a.getAttributs());
+    atr.addAll(b.getAttributs());
+jointureName = a.getName() + " join " + b.getName();
+
+result = new Relation(jointureName, atr, datas);
+
+} else {
+    System.out.println("Erreur : les types d'attributs ne sont pas identiques.");
+}
+
+return result;
+}
+
+*/
+
+
+public Relation tetha_join(Relation a, Relation b, Vector<String> colonne) {
+    int colonneSize = colonne.size();
+
+    // tableau pour stocker dynamiquement les indices des attributs de la colonne
+    int[] indicesAttributsRelation = new int[colonneSize];
+
+    // obtenir dynamiquement les indices des attributs de la colonne
+    for (int i = 0; i <=colonneSize/2; i+=2) {
+        indicesAttributsRelation[i] = getIndiceAttributToCompare(a.getAttributs(), colonne.get(i));
+         indicesAttributsRelation[i+1] = getIndiceAttributToCompare(b.getAttributs(), colonne.get(i+1));
+        
+        // vérifier que les types d'attributs sont identiques
+        if (!a.getAttributs().get(indicesAttributsRelation[i]).getType().trim().equals(b.getAttributs().get(indicesAttributsRelation[i+1]).getType().trim())) {
+           System.out.println("Erreur : les types d'attributs ne sont pas identiques.");
+            return null;
+        }
+    }
+
+    Vector datas = new Vector<>();
+
+    // boucle pour comparer les données en utilisant tous les indices d'attributs dynamiques
+    for (Object data_a : a.getDonnees()) {
+        for (Object data_b : b.getDonnees()) {
+            // convertir en tableau de string les données à comparer avec les indices de colonne dynamiques
+            String chaine_a = data_a.toString();
+            String chaine_b = data_b.toString();
+            String[] tabchaine_a = chaine_a.split(",");
+            String[] tabchaine_b = chaine_b.split(",");
+
+            // vérifier que les données correspondent pour tous les indices d'attributs dynamiques
+            boolean dataMatch = true;
+            for (int i = 0; i < colonneSize/2; i+=2) {
+                if (!tabchaine_a[indicesAttributsRelation[i]].trim().equals(tabchaine_b[indicesAttributsRelation[i+1]].trim())) {
+                    dataMatch = false;
+                    break;
+                }
+            }
+
+            if (dataMatch) {
+                Vector nouvelleLigne = new Vector();
+                nouvelleLigne.add(data_a);
+                nouvelleLigne.add(data_b);
+                String newline = nouvelleLigne.toString();
+                String sousdata = newline.substring(1, newline.length() - 1);
+                datas.add(sousdata);
+            }
+        }
+    }
+
     Vector<Attribut> atr = new Vector<Attribut>();
     atr.addAll(a.getAttributs());
     atr.addAll(b.getAttributs());
 
     Relation result = new Relation(a.getName() + " join " + b.getName(), atr, datas);
 
-return result;
-
-} else {
-    System.out.println("Erreur : les types d'attributs ne sont pas identiques.");
+    return result;
 }
-
-
-return null; 
-}
-
 
 
 
