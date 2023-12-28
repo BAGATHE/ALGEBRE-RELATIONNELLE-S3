@@ -2,3 +2,4 @@ string nom, nombre age
 lolo, 22
 kan, 22
 danny, 20
+danny, 20

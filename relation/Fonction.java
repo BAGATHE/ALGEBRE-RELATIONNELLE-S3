@@ -125,7 +125,7 @@ public void createTable(Relation relation) {
     }
 }
 public int verifExpression(String sqlRequete) {
-        String[] modeles = new String[6];
+        String[] modeles = new String[7];
         modeles[0] = "mamorona\\s+([a-zA-Z_]\\w*)\\s*\\(([^)]*)\\)+$"; //mamorona personne(string nom,nombre age)
         modeles[1] ="ampidiro anaty\\s+([a-zA-Z_]\\w*)\\s*\\(([^)]*)\\)";//ampidiro anaty personne(lolo,21);
         modeles[2] ="^alaivo daoly\\s+[a-zA-Z]+$"; //alaivo daoly personne
@@ -133,6 +133,11 @@ public int verifExpression(String sqlRequete) {
         //alaivo anaty personne(nom,age) izay nom=xxx ary age=xxx;
         modeles[4]="ataovy jointure naturaly\\s+\\(([^)]*)\\)$"; //ataovy jointure naturaly (personne,olona)
         modeles[5]="ataovy jointure\\s+\\(([^)]*)\\)$";
+        modeles[6]="diviseo\\s+([^,]+),([^\\s]+)\\s+omeo\\s+([^\\s]+)\\s+par\\s+([^\\s]+)"; //diviseo vente,client omeo refproduit par client
+
+           //diviseo\\s+\\(([^)]*)\\)\\s+omeo\\s+\\(([^)]*)\\)\\s+par\\s+\\(([^)]*)\\)
+          //  "diviseo (vente,client) omeo (refproduit) par (client)";
+          
         for (int i = 0; i < modeles.length; i++) {
             Pattern expression = Pattern.compile(modeles[i]);
             Matcher matcher = expression.matcher(sqlRequete);
@@ -400,6 +405,7 @@ public void displayAllcontent(Relation relation) {
 
     // Affichage des données
     for (Object data : donnees) {
+
            String chaine = data.toString();
            String tabchaine[] = chaine.split(",");
 
@@ -489,7 +495,15 @@ public void displayAll(Relation relation){
                          displayAllcontent(tetha_join(relations.get(0),relations.get(1), colonne));
                         }
                         
-           }else{
+           }else if(verifExpression(requette)==6){
+                  String  tabrequette[] = requette.split(" ");
+                  String relations[] = tabrequette[1].split(",");
+                  
+                  Relation a = getRelationByName(relations[0]);
+                  Relation b = getRelationByName(relations[1]);
+                displayAllcontent(divisionAlgebrique(a,b,tabrequette[3],tabrequette[5]));
+                   
+                }else{
             System.out.println("(1)--->stucture requette inexacte");
            }
     }
@@ -597,8 +611,8 @@ public void displayAll(Relation relation){
     return table;
 }
 
+/*fonction supprime les double methode append*/
 
- 
 public Relation getContentInRelation(String input){
 
     Vector<String> lignes = new Vector<>();
@@ -645,9 +659,12 @@ public Relation getContentInRelation(String input){
                  String sousdata = String.join(",", data);
                 
                     donner.add(sousdata);
+                   // Vector uniqueELementData = uniqueElement(donner); //alaiko unique element sans doublon
+                    //donner.clear();  // je vide le vector
+                    //donner.addAll(uniqueELementData); // je insert dans le vector vide ces donné sans doublon
                 }
                 if (partOfRequette.length<=2) {
-                    table = new Relation(tableName, attri, donner);
+                    table = new Relation(tableName, attri,donner);
                 }else if (partOfRequette.length==3) {    
                            String[] condition = partOfRequette[2].split("=");
                            int indice = -1;
@@ -922,22 +939,21 @@ public Relation naturalJoin(Relation a ,Relation b){
 
 ArrayList<int[]> indiceAttributSAme = getIndiceAttributSame(resultproductCartesian);   // je prend les indice des attribut parreil [1,2][indice r1,indice r2];
 
+
 for (int i = 0; i < indiceAttributSAme.size(); i++) {
     for (int index = 0; index < resultproductCartesian.getDonnees().size(); index++) {
         String line = (String) data.get(index);
         String[]tabline = line.split(",");
-    
+        // ra mitovy ny data relation 1 sy 2 am indice attribut mitovy d append indice nle ligne 
         if (tabline[(int)indiceAttributSAme.get(i)[0]].trim().equals(tabline[(int)indiceAttributSAme.get(i)[1]].trim())) {
-            tabindiceline.add(index);
+            tabindiceline.add(index);                                           
         }
     }
 }
 
-Vector doublon =tabindiceline;
-
 Vector newdata  = new Vector(); 
 Vector indiceUniquedata = getIndiceAttrubutUnique(getUniqueAttribut(resultproductCartesian.getAttributs()),resultproductCartesian.getAttributs());
-for (Object indice : doublon) {
+for (Object indice : tabindiceline) {
       String line = (String) data.get((int)indice);
       String[]tabline = line.split(",");
       String result="";
@@ -1118,6 +1134,61 @@ public Relation tetha_join(Relation a, Relation b, Vector<String> colonne) {
 
 
 
+
+public Relation divisionAlgebrique(Relation r1,Relation r2,String nameColunmResponse,String nameAttributCommun){
+//manao projection sur r1 alaina ny nameColunmRespoonse,namaAttributCommun
+// alaivo anaty namerelation(namecolonneresponse,nameattributcommun);
+StringBuilder requette1 = new StringBuilder();
+requette1.append("alaivo anaty ").append(r1.getName()).append("("+nameColunmResponse+",").append(nameAttributCommun+")");
+Relation relation1 = getContentInRelation(requette1.toString());
+
+
+
+//alaivo anaty namerelation2(namesameattribut)
+StringBuilder requette2 = new StringBuilder();
+requette2.append("alaivo anaty ").append(r2.getName()).append("("+nameAttributCommun+")");
+Relation relation2 = getContentInRelation(requette2.toString());
+
+//alaiko ny nombre de client
+int numberOfRow = relation2.getDonnees().size();
+
+// alaiko ny donner unique element colonne namecolunmresponse
+List<String> uniqueElements = new ArrayList<>();
+for (Object colonne1 : relation1.getDonnees()) {
+    String[] colonneSplit = colonne1.toString().split(",");
+    if (colonneSplit.length > 0 && !uniqueElements.contains(colonneSplit[0])) {
+        uniqueElements.add(colonneSplit[0]);
+    }
+}
+
+// je verifie si la reference est egale au nombre de client si c'est le cas je l'ajoute a ma nouvelle relation
+Relation response = null;
+String nomrelation ="result";
+Vector<Attribut>  attributs = new Vector<Attribut>();
+attributs.add(relation1.getAttributs().get(0));
+Vector resultdata = new Vector<>();
+
+
+for (int index = 0; index < uniqueElements.size(); index++) {
+    int compteur=0;
+     for (Object colonne1 : relation1.getDonnees()) {
+    String[] colonneSplit = colonne1.toString().split(",");
+    if (colonneSplit[0].equals(uniqueElements.get(index))) {
+            compteur+=1;
+    }
+}
+
+if (compteur == numberOfRow) {
+    resultdata.add(uniqueElements.get(index));
+}
+}
+
+
+response = new Relation(nomrelation, attributs, resultdata);
+
+return response;
+
+}
 
 
 

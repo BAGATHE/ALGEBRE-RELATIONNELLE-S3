@@ -1,0 +1,6 @@
+string refproduit, nombre prix, string nom, string numclient
+a1, 10, prod1, x1
+a2, 100, prod2, x2
+a3, 20, prod3, x1
+a1, 10, prod1, x2
+a2, 100, prod2, x1

@@ -18,7 +18,7 @@ public class Main {
         System.out.println(tab.getAttributs()[1]);
         System.out.println(tab.getAttributs()[2]);
 */
-   
+ 
 System.out.println("connected"); 
         while (exit.equals(" ")) {
             System.out.print("=> : ");
@@ -32,6 +32,7 @@ exit = "exit";
         }
        System.out.println("bye bye");
         scanner.close();
+//diviseo (vente,client) omeo (refproduit) par (client)
 
 
 //System.out.println(function.verifExpression("ataovy jointure (personne:nom=people:nom,personne:age=people:age)"));
@@ -92,6 +93,10 @@ Attribut twos = new Attribut("nombre","age");
     String colb = "nom";
     Vector<String> colonne = new Vector<String>();
     colonne.add(cola); ;colonne.add(colb);
+
+  //  function.naturalJoin(a, b);
+
+  /*function.divisionAlgebrique(b,a,"nom","age");*/
    // function.displayAllcontent(function.naturalJoin(a,b));
     //function.displayAllcontent(function.tetha_join(a, b, colonne));
  //function.displayAllcontent(function.naturalJoin(a, b));
@@ -100,7 +105,6 @@ Attribut twos = new Attribut("nombre","age");
 //Relation r = function.tetha_join(a, b, colonne);
 
 
-   // function.jointureNaturelle(a, b);
     //String chaine = "[1,A, 1,A,B]";
    // System.out.println(chaine.substring(1,chaine.length()-1));
 

@@ -1,0 +1,3 @@
+string numclient, string nom
+x1, bema
+x2, lita

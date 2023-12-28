@@ -1,0 +1,4 @@
+string idcours, string idsalle
+archi, salle1
+algo, salle2
+syst, salle1

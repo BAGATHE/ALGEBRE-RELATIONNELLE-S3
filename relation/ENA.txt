@@ -1,0 +1,4 @@
+nombre idetudiant, string nom, string adresse
+100, toto, nice
+200, tata, paris
+300, tity, rome

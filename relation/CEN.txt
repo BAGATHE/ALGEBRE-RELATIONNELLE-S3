@@ -1,0 +1,8 @@
+string idcours, nombre idetudiant, string note
+archi, 100, A
+archi, 300, A
+syst, 100, B
+syst, 200, A
+syst, 300, B
+algo, 100, C
+algo, 200, A

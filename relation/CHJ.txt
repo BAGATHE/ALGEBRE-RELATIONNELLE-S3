@@ -1,0 +1,5 @@
+string idcours, string jour, string heure
+archi, lundi, 9h
+algo, mardi, 9h
+algo, vendredi, 9h
+syst, mardi, 14h
